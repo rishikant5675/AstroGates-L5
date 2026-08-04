@@ -9,8 +9,8 @@ AstroGates is a decentralized, non-custodial micro-payment gateway for digital c
 
 * **Live Vercel Deployment**: [https://astro-gates-l5.vercel.app/](https://astro-gates-l5.vercel.app/)
 * **Loom Demo Video**: [https://photos.app.goo.gl/vigKcNrRpVxshB5B7](https://photos.app.goo.gl/vigKcNrRpVxshB5B7)
-* **Google Form Link**: [Submit Onboarding Feedback](https://docs.google.com/forms/d/1oTYHP2p1g0hIBqIKMykRGy_9LEUPxSUzbHMu4aFBPy4/viewform)
-* **Google Sheets Response Link**: [View Public Response Sheet](https://docs.google.com/spreadsheets/d/1EEozuYh6xwKV-xdxgqQpr5R0xiE4uNU4XYKoxev7anw/edit?resourcekey=&gid=2008765395#gid=2008765395)
+* **Google Form Link**: [Submit Onboarding Feedback](https://docs.google.com/forms/d/1TSRR0OT8RJHsVsFwntpsKwIBOaxR9haOre7vrb42o1Y/viewform)
+* **Google Sheets Response Link**: [View Public Response Sheet](https://docs.google.com/spreadsheets/d/16VdB__K_z04gP9So8v4468FbXfLw0Ke7AxjPw2aeIA0/edit?usp=sharing)
 * **Soroban Testnet Contract ID**: `CDKURYTMIMKTQSNFSMGCQI75DZ4JRGFNM7CTPR56H7X62SCPQNSHXSUW`
 * **Stellar Lab Contract Viewer**: [Soroban Testnet Spec Viewer](https://lab.stellar.org/r/testnet/contract/CDKURYTMIMKTQSNFSMGCQI75DZ4JRGFNM7CTPR56H7X62SCPQNSHXSUW)
 * **Contract Deployment Tx Hash**: `5f656ef9fe5172359651e624bcd827fe4c0e91243648d73beec5be713f61b402`
@@ -153,8 +153,8 @@ To prove the production readiness of our payment gateway, 62 distinct wallet add
 ## 6. User Onboarding & Feedback Collection
 
 To satisfy Level 5 requirements, we created a Google Form to gather details and reviews from our onboarded testnet users.
-* **Google Form Link**: [Submit Onboarding Feedback](https://docs.google.com/forms/d/1oTYHP2p1g0hIBqIKMykRGy_9LEUPxSUzbHMu4aFBPy4/viewform)
-* **Google Sheets Response Link**: [View Public Response Sheet](https://docs.google.com/spreadsheets/d/1EEozuYh6xwKV-xdxgqQpr5R0xiE4uNU4XYKoxev7anw/edit?resourcekey=&gid=2008765395#gid=2008765395)
+* **Google Form Link**: [Submit Onboarding Feedback](https://docs.google.com/forms/d/1TSRR0OT8RJHsVsFwntpsKwIBOaxR9haOre7vrb42o1Y/viewform)
+* **Google Sheets Response Link**: [View Public Response Sheet](https://docs.google.com/spreadsheets/d/16VdB__K_z04gP9So8v4468FbXfLw0Ke7AxjPw2aeIA0/edit?usp=sharing)
 * **Form Questions**:
   1. *Full Name* (text)
   2. *Email Address* (text)
