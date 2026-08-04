@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { 
   Plus, Copy, Trash2, ExternalLink, Wallet, DollarSign, 
   Activity, BarChart3, Link2, Check, RefreshCw, AlertCircle,
-  Zap
+  Zap, ChevronRight
 } from "lucide-react";
 import { 
   getLinks, createLink, deleteLink, getDashboardStats, 
@@ -40,6 +40,7 @@ export default function Dashboard() {
   const [isFreighterInst, setIsFreighterInst] = useState(false);
   const [isLoadingWallet, setIsLoadingWallet] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showWalletModal, setShowWalletModal] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -73,11 +74,16 @@ export default function Dashboard() {
     setTelemetryEvents(analytics.getEvents());
   };
 
-  const handleConnectWallet = async () => {
+  const handleConnectWallet = () => {
+    setShowWalletModal(true);
+  };
+
+  const selectWalletAndConnect = async (walletType: string) => {
+    setShowWalletModal(false);
     setIsLoadingWallet(true);
     setErrorMsg("");
     try {
-      const res = await connectWallet();
+      const res = await connectWallet(walletType);
       if (res.error) {
         throw new Error(res.error);
       }
@@ -88,11 +94,11 @@ export default function Dashboard() {
       if (typeof window !== 'undefined') {
         window.localStorage.removeItem("stellar_wallet_disconnected");
       }
-      analytics.track("Wallet Connected", { walletAddress: res.address });
+      analytics.track("Wallet Connected", { walletAddress: res.address, walletType });
       refreshData();
     } catch (e: any) {
       console.error(e);
-      setErrorMsg(e.message || "Failed to connect Freighter.");
+      setErrorMsg(e.message || `Failed to connect ${walletType} wallet.`);
     } finally {
       setIsLoadingWallet(false);
     }
@@ -679,6 +685,55 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      {showWalletModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border-brand-rose/25 bg-gradient-to-b from-slate-900 to-brand-dark max-w-md w-full mx-4 shadow-2xl relative">
+            <h2 className="font-display font-extrabold text-xl text-white mb-2">Connect your Stellar Wallet</h2>
+            <p className="text-slate-400 text-xs mb-6 font-sans">Select your preferred wallet connection to authorize AstroGates links.</p>
+            
+            <div className="space-y-3">
+              <button
+                type="button"
+                onClick={() => selectWalletAndConnect("freighter")}
+                className="w-full flex items-center justify-between p-4 rounded-xl bg-slate-950/60 hover:bg-slate-950 border border-slate-800/80 hover:border-brand-rose/30 transition-all duration-150 text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-brand-rose/10 flex items-center justify-center text-brand-rose font-bold text-sm">FR</div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white group-hover:text-brand-rose transition-colors duration-150">Freighter Wallet</h4>
+                    <span className="text-[10px] text-slate-500">Browser Extension (Recommended)</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-brand-rose transition-colors duration-150" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => selectWalletAndConnect("albedo")}
+                className="w-full flex items-center justify-between p-4 rounded-xl bg-slate-950/60 hover:bg-slate-950 border border-slate-800/80 hover:border-brand-rose/30 transition-all duration-150 text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-brand-emerald/10 flex items-center justify-center text-brand-emerald font-bold text-sm">AL</div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white group-hover:text-brand-emerald transition-colors duration-150">Albedo Wallet</h4>
+                    <span className="text-[10px] text-slate-500">Safe Web-based wallet (No install)</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-brand-emerald transition-colors duration-150" />
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowWalletModal(false)}
+              className="mt-6 w-full text-center text-xs font-bold text-slate-500 hover:text-slate-300 uppercase tracking-wider transition-colors duration-150"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

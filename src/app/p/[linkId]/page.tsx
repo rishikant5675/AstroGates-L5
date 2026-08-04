@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { 
   Lock, Unlock, ArrowRight, Wallet, AlertCircle, 
-  ShieldCheck, RefreshCw, ExternalLink 
+  ShieldCheck, RefreshCw, ExternalLink, ChevronRight 
 } from "lucide-react";
 import { getLinkById, updateLinkStats } from "@/utils/localDb";
 import { analytics } from "@/utils/analytics";
@@ -34,6 +34,7 @@ export default function GatewayPage() {
   const [isWrongNetwork, setIsWrongNetwork] = useState(false);
   const [txLogs, setTxLogs] = useState<string[]>([]);
   const [txHash, setTxHash] = useState<string>("");
+  const [showWalletModal, setShowWalletModal] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -77,7 +78,7 @@ export default function GatewayPage() {
     setTxLogs((prev) => [...prev, `> ${msg}`]);
   };
 
-  const handlePayment = async () => {
+  const handlePayment = async (walletType: string = "freighter") => {
     if (!link) return;
     setLoading(true);
     setErrorMsg("");
@@ -88,31 +89,34 @@ export default function GatewayPage() {
     analytics.track("Payment Triggered", { 
       linkId, 
       price: link.price, 
-      token: link.token 
+      token: link.token,
+      walletType
     });
 
     try {
-      addLog("Verifying Freighter wallet installation...");
-      const available = await isFreighterAvailable();
-      if (!available) {
-        setHasFreighter(false);
-        throw new Error("Freighter wallet extension not found.");
-      }
+      if (walletType === "freighter") {
+        addLog("Verifying Freighter wallet installation...");
+        const available = await isFreighterAvailable();
+        if (!available) {
+          setHasFreighter(false);
+          throw new Error("Freighter wallet extension not found.");
+        }
 
-      // Check Network configuration
-      addLog("Verifying wallet network details...");
-      const netStatus = await checkWalletNetwork();
-      if (netStatus.error) {
-        throw new Error(`Network Check: ${netStatus.error}`);
-      }
-      if (!netStatus.onTestnet) {
-        setIsWrongNetwork(true);
-        throw new Error("Connected to the wrong network. Please switch to Testnet in Freighter.");
+        // Check Network configuration
+        addLog("Verifying wallet network details...");
+        const netStatus = await checkWalletNetwork();
+        if (netStatus.error) {
+          throw new Error(`Network Check: ${netStatus.error}`);
+        }
+        if (!netStatus.onTestnet) {
+          setIsWrongNetwork(true);
+          throw new Error("Connected to the wrong network. Please switch to Testnet in Freighter.");
+        }
       }
 
       // Request wallet access
-      addLog("Awaiting Freighter wallet connection permission...");
-      const res = await connectWallet();
+      addLog(`Awaiting ${walletType === "albedo" ? "Albedo" : "Freighter"} wallet connection permission...`);
+      const res = await connectWallet(walletType);
       if (res.error) {
         throw new Error(res.error);
       }
@@ -179,7 +183,7 @@ export default function GatewayPage() {
       <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-200" />
       <span>Wrong Network! Switch Freighter setting to **Testnet** to proceed.</span>
       <button 
-        onClick={handlePayment} 
+        onClick={() => handlePayment("freighter")} 
         className="px-3 py-1 bg-red-950/60 border border-red-500/30 rounded-lg text-xs hover:bg-red-800 transition-colors uppercase tracking-wider font-bold"
       >
         Retry Check
@@ -315,7 +319,7 @@ export default function GatewayPage() {
           <>
             {status === "idle" && (
               <button
-                onClick={handlePayment}
+                onClick={() => setShowWalletModal(true)}
                 className="w-full btn-glow-rose flex items-center justify-center font-bold text-sm"
               >
                 <span>Unlock Content</span>
@@ -409,7 +413,7 @@ export default function GatewayPage() {
                 </div>
                 
                 <button
-                  onClick={handlePayment}
+                  onClick={() => setShowWalletModal(true)}
                   className="w-full btn-glow-emerald flex items-center justify-center font-bold text-sm"
                 >
                   <span>Retry Payment</span>
@@ -431,6 +435,61 @@ export default function GatewayPage() {
           </div>
         </div>
       </div>
+
+      {showWalletModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in">
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border-brand-rose/25 bg-gradient-to-b from-slate-900 to-brand-dark max-w-md w-full mx-4 shadow-2xl relative">
+            <h2 className="font-display font-extrabold text-xl text-white mb-2">Connect your Stellar Wallet</h2>
+            <p className="text-slate-400 text-xs mb-6 font-sans">Select your preferred wallet connection to unlock this content.</p>
+            
+            <div className="space-y-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowWalletModal(false);
+                  handlePayment("freighter");
+                }}
+                className="w-full flex items-center justify-between p-4 rounded-xl bg-slate-950/60 hover:bg-slate-950 border border-slate-800/80 hover:border-brand-rose/30 transition-all duration-150 text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-brand-rose/10 flex items-center justify-center text-brand-rose font-bold text-sm">FR</div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white group-hover:text-brand-rose transition-colors duration-150">Freighter Wallet</h4>
+                    <span className="text-[10px] text-slate-500">Browser Extension (Recommended)</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-brand-rose transition-colors duration-150" />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowWalletModal(false);
+                  handlePayment("albedo");
+                }}
+                className="w-full flex items-center justify-between p-4 rounded-xl bg-slate-950/60 hover:bg-slate-950 border border-slate-800/80 hover:border-brand-rose/30 transition-all duration-150 text-left group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-brand-emerald/10 flex items-center justify-center text-brand-emerald font-bold text-sm">AL</div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white group-hover:text-brand-emerald transition-colors duration-150">Albedo Wallet</h4>
+                    <span className="text-[10px] text-slate-500">Safe Web-based wallet (No install)</span>
+                  </div>
+                </div>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-brand-emerald transition-colors duration-150" />
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowWalletModal(false)}
+              className="mt-6 w-full text-center text-xs font-bold text-slate-500 hover:text-slate-300 uppercase tracking-wider transition-colors duration-150"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

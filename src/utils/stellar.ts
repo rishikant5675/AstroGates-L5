@@ -13,6 +13,8 @@ import {
   nativeToScVal,
 } from "@stellar/stellar-sdk";
 
+import albedo from "@albedo-link/intent";
+
 // Load Environment variables with safe Testnet fallbacks
 export const SOROBAN_RPC_URL = process.env.NEXT_PUBLIC_SOROBAN_RPC_URL || "https://soroban-testnet.stellar.org";
 export const STELLAR_NETWORK_PASSPHRASE = process.env.NEXT_PUBLIC_NETWORK_PASSPHRASE || "Test SDF Network ; September 2015";
@@ -39,9 +41,26 @@ export async function isFreighterAvailable(): Promise<boolean> {
 }
 
 /**
- * Connects Freighter wallet, returning the user's public address or error.
+ * Connects wallet (Freighter or Albedo), returning the user's public address or error.
  */
-export async function connectWallet(): Promise<{ address: string; error?: string }> {
+export async function connectWallet(walletType: string = "freighter"): Promise<{ address: string; error?: string }> {
+  if (walletType === "albedo") {
+    try {
+      const res = await albedo.publicKey({});
+      if (!res.pubkey) {
+        return { address: "", error: "Failed to connect Albedo wallet." };
+      }
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("stellar_wallet_type", "albedo");
+        window.localStorage.setItem("stellar_wallet_address", res.pubkey);
+        window.localStorage.removeItem("stellar_wallet_disconnected");
+      }
+      return { address: res.pubkey };
+    } catch (e: any) {
+      return { address: "", error: e.message || "Albedo wallet connection rejected." };
+    }
+  }
+
   const available = await isFreighterAvailable();
   if (!available) {
     return { address: "", error: "Freighter wallet extension not found. Please install it." };
@@ -56,6 +75,11 @@ export async function connectWallet(): Promise<{ address: string; error?: string
     if (!pubKey) {
       return { address: "", error: "Access was denied or public key could not be retrieved." };
     }
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("stellar_wallet_type", "freighter");
+      window.localStorage.setItem("stellar_wallet_address", pubKey);
+      window.localStorage.removeItem("stellar_wallet_disconnected");
+    }
     return { address: pubKey };
   } catch (e: any) {
     return { address: "", error: e.message || "Failed to connect Freighter." };
@@ -63,9 +87,19 @@ export async function connectWallet(): Promise<{ address: string; error?: string
 }
 
 /**
- * Re-checks an existing Freighter connection without prompt, returning public address.
+ * Re-checks an existing wallet connection without prompt, returning public address.
  */
 export async function checkExistingConnection(): Promise<{ address: string; error?: string }> {
+  const walletType = typeof window !== "undefined" ? window.localStorage.getItem("stellar_wallet_type") : "freighter";
+
+  if (walletType === "albedo") {
+    const cachedAddress = typeof window !== "undefined" ? window.localStorage.getItem("stellar_wallet_address") : "";
+    if (cachedAddress) {
+      return { address: cachedAddress };
+    }
+    return { address: "" };
+  }
+
   const available = await isFreighterAvailable();
   if (!available) return { address: "" };
 
@@ -74,16 +108,25 @@ export async function checkExistingConnection(): Promise<{ address: string; erro
     if (res && res.error) {
       return { address: "", error: res.error };
     }
-    return { address: res?.address || "" };
+    const pubKey = res?.address || "";
+    if (pubKey && typeof window !== "undefined") {
+      window.localStorage.setItem("stellar_wallet_address", pubKey);
+    }
+    return { address: pubKey };
   } catch (e: any) {
     return { address: "", error: e.message || "Failed to check existing Freighter wallet address." };
   }
 }
 
 /**
- * Verifies that the connected Freighter wallet is active on Stellar Testnet.
+ * Verifies that the connected wallet is active on Stellar Testnet.
  */
 export async function checkWalletNetwork(): Promise<{ onTestnet: boolean; error?: string }> {
+  const walletType = typeof window !== "undefined" ? window.localStorage.getItem("stellar_wallet_type") : "freighter";
+  if (walletType === "albedo") {
+    return { onTestnet: true }; // Albedo automatically supports testnet based on transaction intent parameters
+  }
+
   const available = await isFreighterAvailable();
   if (!available) {
     return { onTestnet: false, error: "Freighter wallet not found." };
@@ -191,21 +234,33 @@ export async function payCreatorViaContract(params: {
     };
   }
 
-  // 7. Request signature from Freighter wallet
-  params.onStep?.("Awaiting signature approval from Freighter wallet popup...");
+  // 7. Request signature from configured wallet
+  const walletType = typeof window !== "undefined" ? window.localStorage.getItem("stellar_wallet_type") : "freighter";
+  params.onStep?.(`Awaiting signature approval from ${walletType === "albedo" ? "Albedo" : "Freighter"} wallet...`);
   let signedTxXdr: string;
   try {
-    const signResult = await freighterSignTransaction(tx.toXDR(), {
-      networkPassphrase: STELLAR_NETWORK_PASSPHRASE,
-    });
+    if (walletType === "albedo") {
+      const signResult = await albedo.tx({
+        xdr: tx.toXDR(),
+        network: "testnet"
+      });
+      signedTxXdr = signResult.signed_envelope_xdr;
+      if (!signedTxXdr) {
+        return { success: false, error: "Albedo wallet did not return signed transaction XDR." };
+      }
+    } else {
+      const signResult = await freighterSignTransaction(tx.toXDR(), {
+        networkPassphrase: STELLAR_NETWORK_PASSPHRASE,
+      });
 
-    if (signResult.error) {
-      return { success: false, error: `Freighter signature request denied: ${signResult.error}` };
-    }
-    
-    signedTxXdr = signResult.signedTxXdr;
-    if (!signedTxXdr) {
-      return { success: false, error: "Freighter wallet did not return signed transaction XDR." };
+      if (signResult.error) {
+        return { success: false, error: `Freighter signature request denied: ${signResult.error}` };
+      }
+      
+      signedTxXdr = signResult.signedTxXdr;
+      if (!signedTxXdr) {
+        return { success: false, error: "Freighter wallet did not return signed transaction XDR." };
+      }
     }
   } catch (err: any) {
     console.error("Signing failed:", err);
