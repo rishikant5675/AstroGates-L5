@@ -7,8 +7,8 @@ AstroGates is a decentralized, non-custodial micro-payment gateway for digital c
 
 ## 1. Production Live Demo & Contract Links
 
-* **Live Vercel Deployment**: [https://stellar-paywall-greenbelt.vercel.app](https://stellar-paywall-greenbelt.vercel.app) *(Link to be linked with your Vercel instance)*
-* **Loom Demo Video**: [https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://www.youtube.com/watch?v=dQw4w9WgXcQ) *(Replace with your video walkthrough link)*
+* **Live Vercel Deployment**: [https://astro-gates-l5.vercel.app/](https://astro-gates-l5.vercel.app/)
+* **Loom Demo Video**: [https://photos.app.goo.gl/vigKcNrRpVxshB5B7](https://photos.app.goo.gl/vigKcNrRpVxshB5B7)
 * **Google Form Link**: [Submit Onboarding Feedback](https://docs.google.com/forms/d/1oTYHP2p1g0hIBqIKMykRGy_9LEUPxSUzbHMu4aFBPy4/viewform)
 * **Google Sheets Response Link**: [View Public Response Sheet](https://docs.google.com/spreadsheets/d/1EEozuYh6xwKV-xdxgqQpr5R0xiE4uNU4XYKoxev7anw/edit?resourcekey=&gid=2008765395#gid=2008765395)
 * **Soroban Testnet Contract ID**: `CDKURYTMIMKTQSNFSMGCQI75DZ4JRGFNM7CTPR56H7X62SCPQNSHXSUW`
@@ -160,7 +160,7 @@ A professional pitch deck was prepared to summarize the product's positioning, m
 ---
 
 ## 8. Walkthrough Demo Video
-* **Loom Walkthrough Video**: [AstroGates Walkthrough Demo (YouTube)](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+* **Loom Walkthrough Video**: [AstroGates Walkthrough Demo (Google Photos)](https://photos.app.goo.gl/vigKcNrRpVxshB5B7)
   *(Showcases Freighter connection, Testnet network verification shield, dashboard link creation with optional Webhooks, payment settlement simulation, and redirect/feedback CTA).*
 
 ---
