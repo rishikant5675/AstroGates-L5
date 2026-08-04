@@ -11,7 +11,7 @@ import { analytics } from "@/utils/analytics";
 import { 
   connectWallet, 
   payCreatorViaContract, 
-  PAYWALL_CONTRACT_ID, 
+  ASTROGATES_CONTRACT_ID, 
   isFreighterAvailable, 
   checkWalletNetwork 
 } from "@/utils/stellar";
@@ -54,7 +54,7 @@ export default function GatewayPage() {
       });
     } else {
       setStatus("error");
-      setErrorMsg("This paywall link does not exist or has been removed by the creator.");
+      setErrorMsg("This gateway link does not exist or has been removed by the creator.");
     }
   }, [linkId]);
 
@@ -126,7 +126,7 @@ export default function GatewayPage() {
         creatorAddress: link.creatorAddress,
         amount: link.price,
         tokenAddress: link.tokenId,
-        contractAddress: PAYWALL_CONTRACT_ID,
+        contractAddress: ASTROGATES_CONTRACT_ID,
         onStep: addLog
       });
 
@@ -201,7 +201,7 @@ export default function GatewayPage() {
           </p>
           <a
             href="/"
-            className="w-full inline-flex items-center justify-center px-6 py-3 font-semibold text-brand-darker bg-brand-cyan hover:bg-cyan-400 rounded-xl transition-all duration-200"
+            className="w-full inline-flex items-center justify-center px-6 py-3 font-semibold text-slate-900 bg-brand-rose hover:bg-rose-400 rounded-xl transition-all duration-200"
           >
             Go Back Home
           </a>
@@ -214,7 +214,7 @@ export default function GatewayPage() {
     <div className="max-w-md mx-auto px-4 py-16 sm:py-24 animate-fade-in-up relative">
       {wrongNetworkBanner}
 
-      <div className="glass-panel p-8 rounded-2xl relative overflow-hidden text-center border-brand-purple/20 space-y-8">
+      <div className="glass-panel p-8 rounded-2xl relative overflow-hidden text-center border-brand-emerald/20 space-y-8">
         
         {/* Animated locked/unlocked indicator */}
         <div className="relative mx-auto w-20 h-20">
@@ -223,26 +223,26 @@ export default function GatewayPage() {
               <Unlock className="w-9 h-9" />
             </div>
           ) : (
-            <div className="w-full h-full rounded-full bg-brand-purple/10 text-brand-purple border border-brand-purple/30 flex items-center justify-center">
+            <div className="w-full h-full rounded-full bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/30 flex items-center justify-center">
               <Lock className="w-9 h-9" />
             </div>
           )}
           
           <div className={`absolute inset-0 rounded-full filter blur-md opacity-30 -z-10 ${
-            status === "success" ? "bg-emerald-500" : "bg-brand-purple"
+            status === "success" ? "bg-emerald-500" : "bg-brand-emerald"
           }`} />
         </div>
 
         {/* Real Testnet Validation Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/60 border border-brand-cyan/30 text-[10px] font-mono text-brand-cyan mx-auto">
-          <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan animate-pulse" />
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/60 border border-brand-rose/30 text-[10px] font-mono text-brand-rose mx-auto">
+          <span className="w-1.5 h-1.5 rounded-full bg-brand-rose animate-pulse" />
           <span>REAL TESTNET GATEWAY V2.0</span>
         </div>
 
         {/* Lock screen text context */}
         {status !== "success" ? (
           <div className="space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-brand-cyan">Stellar Secured Gateway</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-brand-rose">Stellar Secured Gateway</span>
             <h2 className="font-display font-extrabold text-2xl text-white leading-tight">
               {link?.title}
             </h2>
@@ -263,15 +263,15 @@ export default function GatewayPage() {
         )}
 
         {/* Payment details box */}
-        <div className="bg-brand-darker/60 border border-brand-purple/10 rounded-xl p-5 space-y-4">
-          <div className="flex items-center justify-between text-xs pb-3 border-b border-brand-purple/5">
+        <div className="bg-brand-darker/60 border border-brand-emerald/10 rounded-xl p-5 space-y-4">
+          <div className="flex items-center justify-between text-xs pb-3 border-b border-brand-emerald/5">
             <span className="text-slate-400">Recipient Payout Address</span>
             <span className="font-mono text-slate-300">
               {link?.creatorAddress.slice(0, 6)}...{link?.creatorAddress.slice(-6)}
             </span>
           </div>
 
-          <div className="flex items-center justify-between text-xs pb-3 border-b border-brand-purple/5">
+          <div className="flex items-center justify-between text-xs pb-3 border-b border-brand-emerald/5">
             <span className="text-slate-400">Network Fee</span>
             <span className="font-semibold text-emerald-400 uppercase">0.00 XLM (Fee-Free)</span>
           </div>
@@ -286,7 +286,7 @@ export default function GatewayPage() {
 
         {/* Live Transaction logs panel */}
         {txLogs.length > 0 && (
-          <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 text-left font-mono text-[11px] text-brand-cyan space-y-1.5 max-h-[140px] overflow-y-auto shadow-inner">
+          <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 text-left font-mono text-[11px] text-brand-rose space-y-1.5 max-h-[140px] overflow-y-auto shadow-inner">
             {txLogs.map((log, index) => (
               <div key={index} className="leading-relaxed whitespace-pre-wrap">
                 {log}
@@ -306,7 +306,7 @@ export default function GatewayPage() {
               href="https://www.freighter.app/"
               target="_blank"
               rel="noreferrer"
-              className="px-4 py-2 bg-brand-cyan hover:bg-cyan-400 text-brand-darker font-bold rounded-lg transition-colors text-[10px] uppercase tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+              className="px-4 py-2 bg-brand-rose hover:bg-rose-400 text-slate-900 font-bold rounded-lg transition-colors text-[10px] uppercase tracking-wider shadow-[0_0_15px_rgba(253, 164, 175, 0.3)]"
             >
               Install Freighter Wallet
             </a>
@@ -316,7 +316,7 @@ export default function GatewayPage() {
             {status === "idle" && (
               <button
                 onClick={handlePayment}
-                className="w-full btn-glow-cyan flex items-center justify-center font-bold text-sm"
+                className="w-full btn-glow-rose flex items-center justify-center font-bold text-sm"
               >
                 <span>Unlock Content</span>
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -328,7 +328,7 @@ export default function GatewayPage() {
                 disabled
                 className="w-full py-3 bg-slate-800 text-slate-400 border border-slate-700 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold cursor-not-allowed"
               >
-                <RefreshCw className="w-4 h-4 animate-spin text-brand-cyan" />
+                <RefreshCw className="w-4 h-4 animate-spin text-brand-rose" />
                 <span>Connecting Freighter...</span>
               </button>
             )}
@@ -338,7 +338,7 @@ export default function GatewayPage() {
                 disabled
                 className="w-full py-3 bg-slate-800 text-slate-400 border border-slate-700 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold cursor-not-allowed"
               >
-                <RefreshCw className="w-4 h-4 animate-spin text-brand-purple" />
+                <RefreshCw className="w-4 h-4 animate-spin text-brand-emerald" />
                 <span>Processing Soroban Transfer...</span>
               </button>
             )}
@@ -347,7 +347,7 @@ export default function GatewayPage() {
               <div className="space-y-4">
                 <button
                   onClick={() => { window.location.href = link.longUrl; }}
-                  className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-brand-darker font-bold rounded-xl flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)]"
+                  className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold rounded-xl flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(16,185,129,0.3)]"
                 >
                   <span>Go to Destination Now</span>
                   <ExternalLink className="w-4 h-4" />
@@ -357,24 +357,24 @@ export default function GatewayPage() {
                   href="https://docs.google.com/forms/d/e/1FAIpQLSfDmockGoogleFormURL1076/viewform"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-full py-2.5 bg-brand-cyan/10 hover:bg-brand-cyan/20 border border-brand-cyan/30 hover:border-brand-cyan/50 text-brand-cyan font-bold rounded-xl flex items-center justify-center gap-2 text-xs transition-all duration-200"
+                  className="w-full py-2.5 bg-brand-rose/10 hover:bg-brand-rose/20 border border-brand-rose/30 hover:border-brand-rose/50 text-brand-rose font-bold rounded-xl flex items-center justify-center gap-2 text-xs transition-all duration-200"
                 >
                   <span>Rate Your Experience & Win $150</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
 
                 {link?.webhookUrl && (
-                  <div className="bg-slate-950/95 border border-slate-800 rounded-xl p-4 text-left font-mono text-[10px] space-y-2 mt-4 text-brand-purple">
-                    <div className="flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-wider pb-1.5 border-b border-brand-purple/5">
+                  <div className="bg-slate-950/95 border border-slate-800 rounded-xl p-4 text-left font-mono text-[10px] space-y-2 mt-4 text-brand-emerald">
+                    <div className="flex items-center justify-between text-[9px] text-slate-500 font-bold uppercase tracking-wider pb-1.5 border-b border-brand-emerald/5">
                       <span>Webhook Delivery Simulator</span>
                       <span className="text-emerald-400">POST 200 OK</span>
                     </div>
                     <div className="text-slate-400 leading-normal">
-                      Sent to: <span className="text-brand-cyan select-all break-all">{link.webhookUrl}</span>
+                      Sent to: <span className="text-brand-rose select-all break-all">{link.webhookUrl}</span>
                     </div>
-                    <pre className="text-slate-300 overflow-x-auto whitespace-pre-wrap select-all bg-brand-darker/60 p-2 rounded-lg border border-brand-purple/10 max-h-[140px]">
+                    <pre className="text-slate-300 overflow-x-auto whitespace-pre-wrap select-all bg-brand-darker/60 p-2 rounded-lg border border-brand-emerald/10 max-h-[140px]">
                       {JSON.stringify({
-                        event: "paywall.unlock_success",
+                        event: "astrogates.unlock_success",
                         timestamp: Date.now(),
                         linkId: link.id,
                         title: link.title,
@@ -392,7 +392,7 @@ export default function GatewayPage() {
                     href={`https://stellar.expert/explorer/testnet/tx/${txHash}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-1.5 text-xs text-brand-cyan hover:underline mt-1 w-full font-semibold"
+                    className="inline-flex items-center justify-center gap-1.5 text-xs text-brand-rose hover:underline mt-1 w-full font-semibold"
                   >
                     <span>Verify on Stellar Expert</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -410,7 +410,7 @@ export default function GatewayPage() {
                 
                 <button
                   onClick={handlePayment}
-                  className="w-full btn-glow-purple flex items-center justify-center font-bold text-sm"
+                  className="w-full btn-glow-emerald flex items-center justify-center font-bold text-sm"
                 >
                   <span>Retry Payment</span>
                   <RefreshCw className="w-4 h-4 ml-2" />
@@ -421,13 +421,13 @@ export default function GatewayPage() {
         )}
 
         {/* Security / Verification Badging */}
-        <div className="space-y-2.5 pt-2 border-t border-brand-purple/10">
+        <div className="space-y-2.5 pt-2 border-t border-brand-emerald/10">
           <div className="flex items-center justify-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-wider">
-            <ShieldCheck className="w-4 h-4 text-brand-cyan" />
+            <ShieldCheck className="w-4 h-4 text-brand-rose" />
             <span>Soroban Verified Contract Payout</span>
           </div>
           <div className="text-[9px] font-mono text-slate-500 break-all select-all hover:text-slate-400 cursor-pointer" title="Click to copy Contract ID">
-            Contract: {PAYWALL_CONTRACT_ID}
+            Contract: {ASTROGATES_CONTRACT_ID}
           </div>
         </div>
       </div>

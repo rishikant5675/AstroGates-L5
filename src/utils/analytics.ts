@@ -24,7 +24,7 @@ export interface AnalyticsRecord {
   timestamp: number;
 }
 
-const ANALYTICS_STORAGE_KEY = 'stellar_paywall_analytics_v2';
+const ANALYTICS_STORAGE_KEY = 'astrogates_telemetry_v1';
 const isBrowser = () => typeof window !== 'undefined';
 
 class AnalyticsTracker {
@@ -122,7 +122,7 @@ class AnalyticsTracker {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `stellar_paywall_telemetry_${Date.now()}.csv`);
+    link.setAttribute("download", `astrogates_telemetry_${Date.now()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

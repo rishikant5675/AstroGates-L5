@@ -1,6 +1,6 @@
 # Developer Webhook Payout Guide
 
-Stellar PayWall supports Webhook integrations to enable automated content delivery or custom order processing when a transaction settles on the Stellar ledger.
+AstroGates supports Webhook integrations to enable automated content delivery or custom order processing when a transaction settles on the Stellar ledger.
 
 ## Configured Event Payload
 
@@ -8,7 +8,7 @@ When a payment succeeds, the gateway triggers a POST request to your configured 
 
 ```json
 {
-  "event": "paywall.unlock_success",
+  "event": "astrogates.unlock_success",
   "timestamp": 1783938499000,
   "linkId": "abc1234",
   "title": "Premium Photography Ebook",

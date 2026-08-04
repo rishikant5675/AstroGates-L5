@@ -12,10 +12,10 @@ pub enum ContractError {
 }
 
 #[contract]
-pub struct StellarPaywallContract;
+pub struct AstroGatesContract;
 
 #[contractimpl]
-impl StellarPaywallContract {
+impl AstroGatesContract {
     /// Transfers `amount` tokens of type `token_id` directly from the `buyer` to the `creator`.
     /// Requires authorization from the buyer.
     /// Emits a contract event upon a successful payment transfer.
@@ -58,13 +58,13 @@ SOROBAN SMART CONTRACT DEPLOYMENT GUIDE (TESTNET)
 Follow these steps to deploy this contract on the Stellar Testnet:
 
 1. GENERATE DEPLOYER WALLET IDENTITY:
-   Generate a keypair named `paywall-admin` on the Testnet. This command 
+   Generate a keypair named `astrogates-admin` on the Testnet. This command 
    automatically funds the new address with testnet XLM via Friendbot.
    
-   $ stellar keys generate paywall-admin --network testnet
+   $ stellar keys generate astrogates-admin --network testnet
 
 2. VERIFY IDENTITY BALANCE:
-   $ stellar keys address paywall-admin
+   $ stellar keys address astrogates-admin
    (Go to laboratory.stellar.org and fund via Friendbot if it has 0 balance)
 
 3. BUILD CONTRACT WASM:
@@ -75,7 +75,7 @@ Follow these steps to deploy this contract on the Stellar Testnet:
 4. DEPLOY TO TESTNET:
    Deploy the compiled WASM binary directly to the Testnet network.
    
-   $ stellar contract deploy --wasm contract/stellar_paywall_contract.wasm --source paywall-admin --network testnet
+   $ stellar contract deploy --wasm contract/astrogates_contract.wasm --source astrogates-admin --network testnet
 
 5. INITIALIZE CONTRACT:
    The contract is stateless and does not require initializers. You can 
@@ -93,8 +93,8 @@ mod test {
         env.mock_all_auths();
 
         // Register contract
-        let contract_id = env.register_contract(None, StellarPaywallContract);
-        let client = StellarPaywallContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, AstroGatesContract);
+        let client = AstroGatesContractClient::new(&env, &contract_id);
 
         // Define test addresses
         let buyer = Address::generate(&env);

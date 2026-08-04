@@ -1,4 +1,4 @@
-export interface PaywallLink {
+export interface AstroGatesLink {
   id: string;
   title: string;
   longUrl: string;
@@ -12,37 +12,37 @@ export interface PaywallLink {
   webhookUrl?: string;
 }
 
-const STORAGE_KEY = 'stellar_paywall_links';
+const STORAGE_KEY = 'astrogates_links';
 
 const isBrowser = () => typeof window !== 'undefined';
 
-export function getLinks(): PaywallLink[] {
+export function getLinks(): AstroGatesLink[] {
   if (!isBrowser()) return [];
   const data = window.localStorage.getItem(STORAGE_KEY);
   if (!data) return [];
   try {
     return JSON.parse(data);
   } catch (e) {
-    console.error('localDb: Error parsing paywall links:', e);
+    console.error('localDb: Error parsing astrogates links:', e);
     return [];
   }
 }
 
-export function saveLinks(links: PaywallLink[]): void {
+export function saveLinks(links: AstroGatesLink[]): void {
   if (!isBrowser()) return;
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
   } catch (e) {
-    console.error('localDb: Error saving paywall links:', e);
+    console.error('localDb: Error saving astrogates links:', e);
   }
 }
 
-export function getLinkById(id: string): PaywallLink | undefined {
+export function getLinkById(id: string): AstroGatesLink | undefined {
   const links = getLinks();
   return links.find(l => l.id === id);
 }
 
-export function createLink(data: Omit<PaywallLink, 'id' | 'clicks' | 'earnings' | 'createdAt'>): PaywallLink {
+export function createLink(data: Omit<AstroGatesLink, 'id' | 'clicks' | 'earnings' | 'createdAt'>): AstroGatesLink {
   const links = getLinks();
   
   let longUrl = data.longUrl.trim();
@@ -50,7 +50,7 @@ export function createLink(data: Omit<PaywallLink, 'id' | 'clicks' | 'earnings' 
     longUrl = 'https://' + longUrl;
   }
 
-  const newLink: PaywallLink = {
+  const newLink: AstroGatesLink = {
     ...data,
     longUrl,
     id: Math.random().toString(36).substring(2, 9),

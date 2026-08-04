@@ -1,5 +1,5 @@
 [package]
-name = "stellar-paywall-contract"
+name = "astrogates-contract"
 version = "0.1.0"
 edition = "2021"
 

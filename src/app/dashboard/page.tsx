@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { 
   getLinks, createLink, deleteLink, getDashboardStats, 
-  DashboardStats, PaywallLink 
+  DashboardStats, AstroGatesLink 
 } from "@/utils/localDb";
 import { analytics, AnalyticsRecord } from "@/utils/analytics";
 import { 
@@ -17,7 +17,7 @@ import {
 } from "@/utils/stellar";
 
 export default function Dashboard() {
-  const [links, setLinks] = useState<PaywallLink[]>([]);
+  const [links, setLinks] = useState<AstroGatesLink[]>([]);
   const [stats, setStats] = useState<DashboardStats>({
     totalRevenueXLM: 0,
     totalRevenueUSDC: 0,
@@ -155,7 +155,7 @@ export default function Dashboard() {
       setWebhookUrl("");
       refreshData();
     } catch (e: any) {
-      setErrorMsg(e.message || "Failed to create paywall link.");
+      setErrorMsg(e.message || "Failed to create gateway link.");
     }
   };
 
@@ -177,7 +177,7 @@ export default function Dashboard() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in-up">
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-brand-purple/10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-brand-emerald/10">
         <div>
           <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white">
             Creator Dashboard
@@ -190,14 +190,14 @@ export default function Dashboard() {
         {/* Freighter Integration Block */}
         <div className="flex items-center gap-4">
           {walletAddress ? (
-            <div className="flex items-center gap-3 bg-brand-purple/10 border border-brand-purple/20 px-4 py-2 rounded-xl">
+            <div className="flex items-center gap-3 bg-brand-emerald/10 border border-brand-emerald/20 px-4 py-2 rounded-xl">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-xs font-mono text-slate-300">
                 {walletAddress.substring(0, 6)}...{walletAddress.substring(walletAddress.length - 6)}
               </span>
               <button
                 onClick={handleDisconnectWallet}
-                className="text-[10px] font-bold text-red-400 hover:text-red-300 hover:underline border-l border-brand-purple/20 pl-3 ml-1 uppercase tracking-wider transition-colors duration-150"
+                className="text-[10px] font-bold text-red-400 hover:text-red-300 hover:underline border-l border-brand-emerald/20 pl-3 ml-1 uppercase tracking-wider transition-colors duration-150"
               >
                 Disconnect
               </button>
@@ -206,7 +206,7 @@ export default function Dashboard() {
             <button
               onClick={handleConnectWallet}
               disabled={isLoadingWallet}
-              className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-brand-darker bg-brand-cyan hover:bg-cyan-400 rounded-xl transition-all duration-200 disabled:opacity-50 shadow-[0_0_10px_rgba(6,182,212,0.15)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]"
+              className="flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-slate-900 bg-brand-rose hover:bg-rose-400 rounded-xl transition-all duration-200 disabled:opacity-50 shadow-[0_0_10px_rgba(16, 185, 129, 0.15)] hover:shadow-[0_0_25px_rgba(253, 164, 175, 0.5)]"
             >
               <Wallet className="w-4 h-4" />
               <span>{isLoadingWallet ? "Connecting..." : "Connect Freighter"}</span>
@@ -216,13 +216,13 @@ export default function Dashboard() {
       </div>
 
       {/* Onboarding Wizard Tutorial */}
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl border-brand-cyan/20 bg-gradient-to-r from-brand-darker/60 to-brand-dark/60 backdrop-blur-md relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
+      <div className="glass-panel p-6 sm:p-8 rounded-2xl border-brand-rose/20 bg-gradient-to-r from-brand-darker/60 to-brand-dark/60 backdrop-blur-md relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-brand-rose/5 rounded-bl-full pointer-events-none" />
         
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2 max-w-xl">
             <h2 className="font-display font-bold text-xl sm:text-2xl text-white flex items-center gap-2">
-              <Zap className="w-5 h-5 text-brand-cyan" />
+              <Zap className="w-5 h-5 text-brand-rose" />
               <span>Stellar Creator Onboarding Guide</span>
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
@@ -234,14 +234,14 @@ export default function Dashboard() {
             href="https://lab.stellar.org/#account-creator"
             target="_blank"
             rel="noreferrer"
-            className="flex-shrink-0 text-xs font-semibold text-brand-cyan border border-brand-cyan/30 hover:border-brand-cyan hover:bg-brand-cyan/10 px-4 py-2 rounded-xl transition-all duration-200 self-start lg:self-center"
+            className="flex-shrink-0 text-xs font-semibold text-brand-rose border border-brand-rose/30 hover:border-brand-rose hover:bg-brand-rose/10 px-4 py-2 rounded-xl transition-all duration-200 self-start lg:self-center"
           >
             Open Stellar Lab Friendbot
           </a>
         </div>
 
         {/* Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 pt-6 border-t border-brand-purple/10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8 pt-6 border-t border-brand-emerald/10">
           {/* Step 1: Install Freighter */}
           <div className={`p-4 rounded-xl border transition-all duration-200 ${
             isFreighterInst 
@@ -270,7 +270,7 @@ export default function Dashboard() {
                 href="https://www.freighter.app/"
                 target="_blank"
                 rel="noreferrer"
-                className="mt-3 inline-block text-[10px] font-bold text-brand-cyan hover:underline uppercase tracking-wider"
+                className="mt-3 inline-block text-[10px] font-bold text-brand-rose hover:underline uppercase tracking-wider"
               >
                 Get Freighter &rarr;
               </a>
@@ -282,7 +282,7 @@ export default function Dashboard() {
             walletAddress 
               ? "bg-emerald-950/20 border-emerald-500/20 text-slate-300" 
               : isFreighterInst
-                ? "bg-brand-purple/5 border-brand-purple/20 text-slate-400 animate-pulse-slow"
+                ? "bg-brand-emerald/5 border-brand-emerald/20 text-slate-400 animate-pulse-slow"
                 : "bg-slate-900/40 border-slate-800/80 text-slate-500"
           }`}>
             <div className="flex items-center justify-between mb-3">
@@ -306,7 +306,7 @@ export default function Dashboard() {
               <button
                 type="button"
                 onClick={handleConnectWallet}
-                className="mt-3 text-[10px] font-bold text-brand-cyan hover:underline uppercase tracking-wider text-left"
+                className="mt-3 text-[10px] font-bold text-brand-rose hover:underline uppercase tracking-wider text-left"
               >
                 Connect Now &rarr;
               </button>
@@ -316,7 +316,7 @@ export default function Dashboard() {
           {/* Step 3: Fund Testnet Account */}
           <div className={`p-4 rounded-xl border transition-all duration-200 ${
             walletAddress 
-              ? "bg-brand-purple/5 border-brand-purple/20 text-slate-400"
+              ? "bg-brand-emerald/5 border-brand-emerald/20 text-slate-400"
               : "bg-slate-900/40 border-slate-800/80 text-slate-500"
           }`}>
             <div className="flex items-center justify-between mb-3">
@@ -334,7 +334,7 @@ export default function Dashboard() {
             links.length > 0 
               ? "bg-emerald-950/20 border-emerald-500/20 text-slate-300"
               : walletAddress
-                ? "bg-brand-purple/5 border-brand-purple/20 text-slate-400"
+                ? "bg-brand-emerald/5 border-brand-emerald/20 text-slate-400"
                 : "bg-slate-900/40 border-slate-800/80 text-slate-500"
           }`}>
             <div className="flex items-center justify-between mb-3">
@@ -347,9 +347,9 @@ export default function Dashboard() {
                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Ready</span>
               )}
             </div>
-            <h3 className="font-display font-bold text-sm text-white mb-1.5">Deploy first Paywall</h3>
+            <h3 className="font-display font-bold text-sm text-white mb-1.5">Deploy first Gateway</h3>
             <p className="text-[11px] leading-relaxed text-slate-400">
-              Use the builder form below to generate a new paywall link. Share it with your audience to receive direct P2P payouts.
+              Use the builder form below to generate a new gateway link. Share it with your audience to receive direct P2P payouts.
             </p>
           </div>
         </div>
@@ -357,23 +357,23 @@ export default function Dashboard() {
 
       {/* Main Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-purple/50 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-purple/5 rounded-bl-full pointer-events-none" />
-          <BarChart3 className="w-5 h-5 text-brand-purple mb-4" />
+        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-emerald/50 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-emerald/5 rounded-bl-full pointer-events-none" />
+          <BarChart3 className="w-5 h-5 text-brand-emerald mb-4" />
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block cursor-help" title="The total number of paywall gateways you have created">Total Gateways</span>
           <span className="text-3xl font-extrabold text-white font-display mt-2 block">{stats.totalLinks}</span>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-cyan/50 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-cyan/5 rounded-bl-full pointer-events-none" />
-          <Activity className="w-5 h-5 text-brand-cyan mb-4" />
-          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block cursor-help" title="The total number of times your paywall links have been clicked by visitors">Gate Clicks</span>
+        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-rose/50 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-rose/5 rounded-bl-full pointer-events-none" />
+          <Activity className="w-5 h-5 text-brand-rose mb-4" />
+          <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block cursor-help" title="The total number of times your astrogates links have been clicked by visitors">Gate Clicks</span>
           <span className="text-3xl font-extrabold text-white font-display mt-2 block">{stats.totalClicks}</span>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-pink/50 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-pink/5 rounded-bl-full pointer-events-none" />
-          <DollarSign className="w-5 h-5 text-brand-pink mb-4" />
+        <div className="glass-panel p-6 rounded-2xl relative overflow-hidden group hover:border-brand-rose/50 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-brand-rose/5 rounded-bl-full pointer-events-none" />
+          <DollarSign className="w-5 h-5 text-brand-rose mb-4" />
           <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block cursor-help" title="The total revenue received directly in XLM">Earnings (XLM)</span>
           <span className="text-3xl font-extrabold text-white font-display mt-2 block">
             {stats.totalRevenueXLM.toFixed(2)} <span className="text-sm font-normal text-slate-400">XLM</span>
@@ -395,11 +395,11 @@ export default function Dashboard() {
         
         {/* Left Column: Form Card */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass-panel p-6 sm:p-8 rounded-2xl relative border-brand-purple/20">
-            <div className="absolute top-0 left-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-brand-purple to-transparent" />
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl relative border-brand-emerald/20">
+            <div className="absolute top-0 left-0 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-brand-emerald to-transparent" />
             <h2 className="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
-              <Plus className="w-5 h-5 text-brand-cyan" />
-              <span>Create New Paywall Link</span>
+              <Plus className="w-5 h-5 text-brand-rose" />
+              <span>Create New Gateway Link</span>
             </h2>
 
             <form onSubmit={handleCreatePaywall} className="space-y-5">
@@ -461,7 +461,7 @@ export default function Dashboard() {
                     <button
                       type="button"
                       onClick={() => setPayoutAddress(walletAddress)}
-                      className="text-[10px] font-bold text-brand-cyan hover:underline uppercase tracking-wider"
+                      className="text-[10px] font-bold text-brand-rose hover:underline uppercase tracking-wider"
                     >
                       Use Connected Wallet
                     </button>
@@ -504,7 +504,7 @@ export default function Dashboard() {
 
               <button
                 type="submit"
-                className="w-full btn-glow-purple flex items-center justify-center font-bold text-sm"
+                className="w-full btn-glow-emerald flex items-center justify-center font-bold text-sm"
               >
                 <span>Generate Smart Paywall Link</span>
                 <Link2 className="w-4 h-4 ml-2" />
@@ -514,10 +514,10 @@ export default function Dashboard() {
         </div>
 
         {/* Right Column: Analytics Telemetry Event Logs */}
-        <div className="glass-panel p-6 rounded-2xl relative border-brand-purple/20 flex flex-col h-[480px]">
-          <div className="flex items-center justify-between pb-4 border-b border-brand-purple/10 mb-4">
+        <div className="glass-panel p-6 rounded-2xl relative border-brand-emerald/20 flex flex-col h-[480px]">
+          <div className="flex items-center justify-between pb-4 border-b border-brand-emerald/10 mb-4">
             <h2 className="font-display font-bold text-lg text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-brand-pink" />
+              <Activity className="w-4 h-4 text-brand-rose" />
               <span>Telemetry Event Log</span>
             </h2>
             <div className="flex items-center gap-2.5">
@@ -525,7 +525,7 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() => analytics.exportToCSV(telemetryEvents)}
-                  className="text-[10px] font-bold text-brand-cyan hover:underline uppercase tracking-wider flex items-center gap-1"
+                  className="text-[10px] font-bold text-brand-rose hover:underline uppercase tracking-wider flex items-center gap-1"
                   title="Export telemetry log to CSV"
                 >
                   Export CSV
@@ -550,7 +550,7 @@ export default function Dashboard() {
               telemetryEvents.map((evt) => (
                 <div 
                   key={evt.id} 
-                  className="bg-brand-darker/60 border border-brand-purple/10 rounded-xl p-3.5 space-y-1 text-xs"
+                  className="bg-brand-darker/60 border border-brand-emerald/10 rounded-xl p-3.5 space-y-1 text-xs"
                 >
                   <div className="flex items-center justify-between">
                     <span className={`font-semibold tracking-wider text-[10px] uppercase px-2 py-0.5 rounded-full ${
@@ -558,7 +558,7 @@ export default function Dashboard() {
                       evt.eventName === "Payment Failure" ? "bg-red-950/60 text-red-400 border border-red-500/20" :
                       evt.eventName === "Payment Triggered" ? "bg-blue-950/60 text-blue-400 border border-blue-500/20" :
                       evt.eventName === "Link Created" ? "bg-purple-950/60 text-purple-400 border border-purple-500/20" :
-                      "bg-cyan-950/60 text-cyan-400 border border-cyan-500/20"
+                      "bg-cyan-950/60 text-rose-400 border border-cyan-500/20"
                     }`}>
                       {evt.eventName}
                     </span>
@@ -589,14 +589,14 @@ export default function Dashboard() {
       </div>
 
       {/* Section: Active paywalls List */}
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl relative border-brand-purple/20">
+      <div className="glass-panel p-6 sm:p-8 rounded-2xl relative border-brand-emerald/20">
         <h2 className="font-display font-bold text-xl text-white mb-6 flex items-center gap-2">
-          <Link2 className="w-5 h-5 text-brand-pink" />
-          <span>Active Paywall Links</span>
+          <Link2 className="w-5 h-5 text-brand-rose" />
+          <span>Active Gateway Links</span>
         </h2>
 
         {links.length === 0 ? (
-          <div className="py-12 text-center text-slate-500 border border-dashed border-brand-purple/20 rounded-xl bg-brand-darker/20">
+          <div className="py-12 text-center text-slate-500 border border-dashed border-brand-emerald/20 rounded-xl bg-brand-darker/20">
             <Link2 className="w-10 h-10 mx-auto stroke-[1.5] opacity-50 mb-3" />
             <p className="text-sm">Create your first link using the form above to deploy a gateway.</p>
           </div>
@@ -604,7 +604,7 @@ export default function Dashboard() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-brand-purple/10 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-brand-emerald/10 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                   <th className="py-4 px-4">Content</th>
                   <th className="py-4 px-4">Target Destination</th>
                   <th className="py-4 px-4">Price / Token</th>
@@ -613,12 +613,12 @@ export default function Dashboard() {
                   <th className="py-4 px-4 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-brand-purple/5 text-sm text-slate-300">
+              <tbody className="divide-y divide-brand-emerald/5 text-sm text-slate-300">
                 {links.map((link) => {
                   const origin = typeof window !== "undefined" ? window.location.origin : "";
                   const gateUrl = `${origin}/p/${link.id}`;
                   return (
-                    <tr key={link.id} className="hover:bg-brand-purple/5 transition-colors duration-200">
+                    <tr key={link.id} className="hover:bg-brand-emerald/5 transition-colors duration-200">
                       <td className="py-4 px-4 font-semibold text-white max-w-[200px] truncate">
                         {link.title}
                       </td>
@@ -641,7 +641,7 @@ export default function Dashboard() {
                         <div className="flex items-center justify-center gap-3">
                           <button
                             onClick={() => copyToClipboard(link.id)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-cyan/10 text-brand-cyan hover:bg-brand-cyan/20 border border-brand-cyan/20 transition-all duration-200"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand-rose/10 text-brand-rose hover:bg-brand-rose/20 border border-brand-rose/20 transition-all duration-200"
                           >
                             {copiedId === link.id ? (
                               <>
