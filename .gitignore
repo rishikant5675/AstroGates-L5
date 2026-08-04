@@ -23,3 +23,6 @@ contract/target_temp/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Scratch and helper scripts
+scratch/
